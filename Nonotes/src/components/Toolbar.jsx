@@ -6,7 +6,7 @@ const Toolbar = ({ currentNote, handleTitleChange, handleSave, handleNewNote, is
   const [ai, setAi] = useState(false);
 
   return (
-    <div className="toolbar-wrapper">
+    <div className="toolbar-wrapper font-comic-sans">
       <div className="bg-gray-100 p-4 border-b border-gray-200 flex justify-between items-center">
         <input 
           type="text" 

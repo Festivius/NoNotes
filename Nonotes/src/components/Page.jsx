@@ -105,7 +105,7 @@ const Page = () => {
   };
 
   return (
-    <div className="w-full h-screen bg-white text-black flex flex-col">
+    <div className="w-full h-screen bg-white text-black flex flex-col font-comic-sans">
       <Toolbar 
         currentNote={currentNote}
         handleTitleChange={handleTitleChange}
