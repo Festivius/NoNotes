@@ -1,15 +1,23 @@
-import React from 'react'
+import React, { useState } from 'react';
 
 const Page = () => {
-  return (
-    <div class="flex justify-center align-bottom h-[90vh]">
-        <div class="h-full aspect-[8.5/11] border-black border-2 p-[2%]">
-            <textarea class="h-full w-full">
-                skkabiaiaiia bomb err
-            </textarea>
-        </div>
-    </div>
-  )
-}
+  const [note, setNote] = useState('Notoes\nName    Date\n(...write away)\nskkabiaiaiia bomb err');
 
-export default Page
+  const handleChange = (event) => {
+    setNote(event.target.value);
+  };
+
+  return (
+    <div className="flex justify-center items-center h-[90vh]">
+      <div className="h-full aspect-[8.5/11] border-black border-2 p-[3%]">
+        <textarea
+          className="h-full w-full resize-none cursor-text focus:outline-none"
+          value={note}
+          onChange={handleChange}
+        />
+      </div>
+    </div>
+  );
+};
+
+export default Page;
