@@ -8,9 +8,6 @@ const Footer = ({ content }) => {
       </div>
       <div className="flex space-x-2">
         <button className="px-3 py-1 rounded-md bg-amber-200 text-amber-700 hover:bg-amber-300 transition-colors text-sm">
-          Export
-        </button>
-        <button className="px-3 py-1 rounded-md bg-amber-200 text-amber-700 hover:bg-amber-300 transition-colors text-sm">
           Settings
         </button>
       </div>
