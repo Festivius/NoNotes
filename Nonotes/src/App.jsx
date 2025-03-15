@@ -1,6 +1,5 @@
 import React from 'react'
 import Page from './components/Page'
-import Toolbar from './components/Toolbar'
 
 const App = () => {
   return (
