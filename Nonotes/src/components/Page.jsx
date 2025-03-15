@@ -45,7 +45,6 @@ const Page = () => {
 
   return (
     <div className="w-full h-screen bg-amber-50 flex flex-col">
-
       <Toolbar 
         currentNote={currentNote}
         handleTitleChange={handleTitleChange}
@@ -53,7 +52,8 @@ const Page = () => {
         handleNewNote={handleNewNote}
         isSaved={isSaved}
       />
-      
+
+      {/* Saved notes */}
       <div className="flex flex-1 overflow-hidden">
         <div className="w-1/4 bg-amber-100 p-2 overflow-y-auto border-r border-amber-200">
           {notes.map(note => (
@@ -73,6 +73,8 @@ const Page = () => {
           )}
         </div>
         
+
+        {/* Written */}
         <div className="flex-1 p-4 overflow-y-auto">
           <textarea
             value={content}

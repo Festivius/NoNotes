@@ -6,7 +6,7 @@ const Toolbar = ({ currentNote, handleTitleChange, handleSave, handleNewNote, is
       <div className="bg-amber-100 p-4 border-b border-amber-200 flex justify-between items-center">
         <input 
           type="text" 
-          value={currentNote.title} 
+          value={currentNote?.title || ""} 
           onChange={handleTitleChange}
           className="bg-transparent text-xl font-medium focus:outline-none border-b border-transparent focus:border-amber-300 text-amber-900"
         />
