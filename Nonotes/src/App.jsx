@@ -5,8 +5,9 @@ import Page from './components/Page'
 const App = () => {
   return (
     <div>
-      <Toolbar/>
-      <Page/>
+      <div className='flex justify-center items-center h-[10vh] mt-10'>
+        <Page/>
+      </div>
     </div>
   )
 }

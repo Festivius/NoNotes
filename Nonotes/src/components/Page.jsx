@@ -1,22 +1,35 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 
 const Page = () => {
-  const [note, setNote] = useState('Notoes\nName    Date\n(...write away)\nskkabiaiaiia bomb err');
+  const [content, setContent] = useState("");
 
-  const handleChange = (event) => {
-    setNote(event.target.value);
+  const handleContentChange = (value) => {
+    setContent(value);
+    console.log("Content:", value);
   };
 
   return (
-    <div className="flex justify-center items-center h-[90vh]">
-      <div className="h-full aspect-[8.5/11] border-black border-2 p-[3%]">
-        <textarea
-          className="h-full w-full resize-none cursor-text focus:outline-none caret-[#5fd765]"
-          value={note}
-          onChange={handleChange}
-        />
+    <div className="w-3/4 mx-auto">
+      <div className="fixed top-0 left-0 w-full h-full flex flex-col">
+      {/* Editor Toolbar */}
+        <div className="bg-gray-200 p-2 border-b shadow-md">
+          <h2 className="text-lg font-semibold">My Editor</h2>
+        </div>
+
+        {/* Quill Editor */}
+        <div className="flex-1 overflow-hidden">
+          <ReactQuill
+            theme="snow"
+            value={content}
+            onChange={handleContentChange}
+            className="h-full"
+          />
+        </div>
       </div>
     </div>
+    
   );
 };
 

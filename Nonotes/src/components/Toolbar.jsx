@@ -6,6 +6,7 @@ const Toolbar = () => {
   const [content, setContent] = useState("");
 
   return <ReactQuill theme="snow" value={content} onChange={setContent} />;
+  
 };
 
 export default Toolbar;
