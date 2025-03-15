@@ -1,11 +1,11 @@
-import React from 'react'
+import React, { useState } from "react";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 
 const Toolbar = () => {
-  return (
-    <div>
-      toolbar
-    </div>
-  )
-}
+  const [content, setContent] = useState("");
 
-export default Toolbar
+  return <ReactQuill theme="snow" value={content} onChange={setContent} />;
+};
+
+export default Toolbar;
