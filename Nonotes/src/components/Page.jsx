@@ -3,17 +3,59 @@ import Footer from "./Footer";
 import Toolbar from "./Toolbar";
 
 const Page = () => {
+  const emojis = ['😊', '😂', '😍', '😎', '🥺', '🙌', '👍', '❤️'];
   const [content, setContent] = useState("");
   const [notes, setNotes] = useState([]);
   const [currentNote, setCurrentNote] = useState({ id: 1, title: "Untitled Note", content: "" });
   const [isSaved, setIsSaved] = useState(true);
 
-  const handleContentChange = (e) => {
+    const handleContentChange = (e) => {
     const newContent = e.target.value;
-    setContent(newContent);
     setCurrentNote({ ...currentNote, content: newContent });
     setIsSaved(false);
+
+    const punctuationRegex = /[.,;!?(){}\[\]"':-]/;
+    let updatedNote = '';
+    let currentWord = '';
+    let inWord = false;
+
+    for (let i = 0; i < newContent.length; i++) {
+        const char = newContent[i];
+
+        if (char.match(/\s/) || punctuationRegex.test(char)) {
+            // If we finished a word, append it as lowercase to updatedNote
+            if (currentWord) {
+                updatedNote += currentWord.toLowerCase(); // Ensure lowercase is applied here
+                currentWord = '';
+            }
+            updatedNote += char; // Add the punctuation or space
+            inWord = false;
+        } else {
+            currentWord += char; // Build the word
+            inWord = true;
+        }
+    }
+
+    // After the loop, if there's any word left, append it to the updatedNote in lowercase
+    if (currentWord) {
+        updatedNote += currentWord; // Ensure lowercase is applied here
+    }
+
+    if (Math.random() > 0.15) {
+        setContent(updatedNote); // Update the note with the modified content
+    } 
+    else if (Math.random() > 0.6) {
+      const randomChar = String.fromCharCode(Math.floor(Math.random() * (122 - 97 + 1)) + 97);
+      setContent(newContent + randomChar);
+    }
+
+    if (Math.random() < 0.03) {
+      const randomIndex = Math.floor(Math.random() * emojis.length);
+      const randomEmoji = emojis[randomIndex]; 
+      setContent(newContent + randomEmoji); 
+    }
   };
+
 
   const handleSave = () => {
     const updatedNotes = notes.find(note => note.id === currentNote.id) 
