@@ -20,10 +20,10 @@ const AiChat = () => {
   };
 
   return (
-    <div className="flex flex-col h-screen bg-amber-50">
+    <div className="flex flex-col h-screen bg-white text-black">
       {/* Header */}
-      <div className="bg-amber-100 p-4 border-b border-amber-200">
-        <h1 className="text-xl font-medium text-amber-900">Cozy Chat</h1>
+      <div className="bg-gray-100 p-4 border-b border-gray-200">
+        <h1 className="text-xl font-medium text-gray-900">Cozy Chat</h1>
       </div>
 
       {/* Messages Area */}
@@ -38,8 +38,8 @@ const AiChat = () => {
             <div
               className={`max-w-3/4 rounded-lg p-3 ${
                 msg.sender === "user"
-                  ? "bg-amber-200 text-amber-900"
-                  : "bg-white border border-amber-200 text-amber-800"
+                  ? "bg-gray-200 text-gray-900"
+                  : "bg-white border border-gray-200 text-gray-800"
               }`}
             >
               {msg.text}
@@ -49,18 +49,18 @@ const AiChat = () => {
       </div>
 
       {/* Input Box */}
-      <div className="border-t border-amber-200 bg-amber-100 p-4">
+      <div className="border-t border-gray-200 bg-gray-100 p-4">
         <div className="flex items-center">
           <textarea
             placeholder="Type your message..."
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            className="flex-1 p-3 rounded-lg border border-amber-200 focus:outline-none focus:border-amber-400 resize-none bg-white text-amber-900 h-12"
+            className="flex-1 p-3 rounded-lg border border-gray-200 focus:outline-none focus:border-gray-400 resize-none bg-white text-gray-900 h-12"
             rows="1"
           />
           <button
             onClick={sendMessage}
-            className="ml-2 p-3 rounded-lg bg-amber-500 text-white hover:bg-amber-600 transition-colors"
+            className="ml-2 p-3 rounded-lg bg-gray-500 text-white hover:bg-gray-600 transition-colors"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
