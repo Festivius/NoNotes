@@ -11,7 +11,7 @@ const Page = () => {
     <div className="flex justify-center items-center h-[90vh]">
       <div className="h-full aspect-[8.5/11] border-black border-2 p-[3%]">
         <textarea
-          className="h-full w-full resize-none cursor-text focus:outline-none"
+          className="h-full w-full resize-none cursor-text focus:outline-none caret-[#5fd765]"
           value={note}
           onChange={handleChange}
         />
