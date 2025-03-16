@@ -2,89 +2,88 @@ import React, { useState } from "react";
 import { Bot, X } from "lucide-react";
 import AiChat from "./AiChat";
 
-const Toolbar = ({ currentNote, handleTitleChange, handleSave, handleNewNote, isSaved, bold, italic, size, font, onBoldToggle, onItalicToggle, onSizeChange, onFontChange }) => {
+const Toolbar = ({ currentNote, handleTitleChange, handleSave, handleNewNote, isSaved, bold, italic, size, onBoldToggle, onItalicToggle, onSizeChange }) => {
   const [ai, setAi] = useState(false);
 
   return (
-    <div className="toolbar-wrapper font-comic-sans">
-      <div className="bg-gray-100 p-4 border-b border-gray-200 flex justify-between items-center">
-        <input 
-          type="text" 
-          value={currentNote?.title || ""} 
-          onChange={handleTitleChange}
-          className="bg-transparent text-xl font-medium focus:outline-none border-b border-transparent focus:border-gray-300 text-gray-900"
-        />
-
-        <div className="flex space-x-2">
-          <button 
-            className={`px-3 py-1 rounded-md bg-white text-neutral-500 hover:bg-gray-300 transition-colors text-sm ${bold ? 'font-bold' : ''}`}
-            onClick={onBoldToggle}
-          >
-            B
-          </button>
-          <button 
-            className={`px-3 py-1 rounded-md bg-white text-neutral-500 hover:bg-gray-300 transition-colors text-sm ${italic ? 'italic' : ''}`}
-            onClick={onItalicToggle}
-          >
-            I
-          </button>
-          <select 
-            className="px-3 py-1 rounded-md bg-white text-neutral-500 hover:bg-gray-300 transition-colors text-sm"
-            onChange={(e) => onSizeChange(e.target.value)}
-            value={size}
-          >
-            <option value="small" className="text-xs">Small</option>  {/* Smaller */}
-            <option value="normal" className="text-base">Normal</option> {/* Default */}
-            <option value="large" className="text-2xl">Large</option>  {/* Much Bigger */}
-          </select>
-          <select 
-            className="px-3 py-1 rounded-md bg-white text-neutral-500 hover:bg-gray-300 transition-colors text-sm"
-            onChange={(e) => onFontChange(e.target.value)}
-            value={font}
-          >
-            <option value="sans-serif">Sans-serif</option>
-            <option value="serif">Serif</option>
-            <option value="monospace">Monospace</option>
-          </select>
-        </div>
-
-        <div className="">
-          <button 
-            className="flex items-center space-x-2 px-3 py-1 rounded-md bg-white text-neutral-500 hover:bg-gray-300 transition-colors text-sm"
-            onClick={() => setAi(true)}
-          >
-            <Bot size={16} /> {/* AI Icon */}
-            <span>AI</span>
-          </button>
-        </div>
-
-        {ai && (
-          <div className='absolute top-0 right-0 bg-white p-4 shadow-lg rounded-lg'>
-            <button
-              className="absolute top-2 left-2 text-red-500 hover:text-red-700 transition"
-              onClick={() => setAi(false)}
-            >
-              <X size={30} /> {/* Red X Icon */}
-            </button>
-            <AiChat />
+    <div className="toolbar-wrapper">
+      <div className="bg-gray-100 px-6 py-3 border-b border-gray-200">
+        <div className="flex items-center justify-between space-x-4 max-w-[1400px] mx-auto">
+          {/* Left section - Title */}
+          <div className="flex-1 min-w-[200px]">
+            <input 
+              type="text" 
+              value={currentNote?.title || ""} 
+              onChange={handleTitleChange}
+              className="w-full bg-transparent text-xl font-medium focus:outline-none border-b-2 border-transparent focus:border-gray-400 text-gray-900 px-2 py-1 transition-all"
+              placeholder="Untitled Note"
+            />
           </div>
-        )}
 
-        <div className="flex space-x-2">
-          <button 
-            onClick={handleSave} 
-            className={`px-4 py-2 rounded-md ${isSaved ? 'bg-gray-200 text-gray-700' : 'bg-gray-500 text-white'} hover:bg-gray-600 transition-colors`}
-          >
-            {isSaved ? "Saved" : "Save"}
-          </button>
-          <button 
-            onClick={handleNewNote} 
-            className="px-4 py-2 rounded-md bg-gray-200 text-gray-700 hover:bg-gray-300 transition-colors"
-          >
-            New Note
-          </button>
+          {/* Center section - Formatting */}
+          <div className="flex items-center space-x-3 bg-white px-4 py-1.5 rounded-lg shadow-sm">
+            <button 
+              className={`px-4 py-1.5 rounded-md transition-all ${bold ? 'bg-gray-200 text-gray-900' : 'text-gray-600 hover:bg-gray-100'}`}
+              onClick={onBoldToggle}
+            >
+              <span className="font-bold">B</span>
+            </button>
+            <div className="h-6 w-px bg-gray-300"/>
+            <button 
+              className={`px-4 py-1.5 rounded-md transition-all ${italic ? 'bg-gray-200 text-gray-900' : 'text-gray-600 hover:bg-gray-100'}`}
+              onClick={onItalicToggle}
+            >
+              <span className="italic">I</span>
+            </button>
+            <div className="h-6 w-px bg-gray-300"/>
+            <select 
+              className="px-3 py-1.5 rounded-md bg-transparent text-gray-600 hover:bg-gray-100 transition-all cursor-pointer"
+              onChange={(e) => onSizeChange(e.target.value)}
+              value={size}
+            >
+              <option value="small">Small</option>
+              <option value="normal">Normal</option>
+              <option value="large">Large</option>
+            </select>
+          </div>
+
+          {/* Right section - Actions */}
+          <div className="flex items-center space-x-3">
+            <button 
+              className="flex items-center space-x-2 px-4 py-2 rounded-md bg-white text-gray-600 hover:bg-gray-50 transition-all shadow-sm"
+              onClick={() => setAi(true)}
+            >
+              <Bot size={18} />
+              <span>AI Assistant</span>
+            </button>
+            <button 
+              onClick={handleSave} 
+              className={`px-4 py-2 rounded-md transition-all shadow-sm ${isSaved ? 'bg-gray-200 text-gray-600' : 'bg-blue-500 text-white hover:bg-blue-600'}`}
+            >
+              {isSaved ? "Saved" : "Save"}
+            </button>
+            <button 
+              onClick={handleNewNote} 
+              className="px-4 py-2 rounded-md bg-white text-gray-600 hover:bg-gray-50 transition-all shadow-sm"
+            >
+              New Note
+            </button>
+          </div>
         </div>
       </div>
+
+      {/* AI Chat popup */}
+      {ai && (
+        <div className='absolute top-0 right-0 bg-white p-4 shadow-lg rounded-lg'>
+          <button
+            className="absolute top-2 left-2 text-red-500 hover:text-red-700 transition"
+            onClick={() => setAi(false)}
+          >
+            <X size={30} /> {/* Red X Icon */}
+          </button>
+          <AiChat />
+        </div>
+      )}
     </div>
   );
 };

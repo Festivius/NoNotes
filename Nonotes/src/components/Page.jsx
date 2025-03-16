@@ -1,9 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Footer from "./Footer";
 import Toolbar from "./Toolbar";
+import MathPopup from "./MathPopup";
 
 const Page = () => {
-  const emojis = ['😊', '😂', '😍', '😎', '🥺', '🙌', '👍', '❤️'];
+  const emojis = ['😊', '😂', '😍', '😎', '🥺', '🙌', '👍', '❤️',  "🐙", "🦑", "🦐", "🦕", "🦖", "🐉", "🦓", "🦍", "🦦", "🦨",
+    "🦔", "🐿️", "🦫", "🦜", "🦩", "🦚", "🦒", "🐅", "🐊", "🦈",
+    "🦞", "🐍", "🐸", "🐖", "🐏", "🦘", "🍕", "🍟", "🌮", "🌯",
+    "🥙", "🥞", "🍩", "🍿", "🍦", "🍉", "🍇", "🍒", "🥥", "🥑",
+    "🍆", "🥕", "🥗", "🍷", "🥃", "☕", "🧃", "🥤", "🍵", "🍾",
+    "🛸", "🚀", "⛵", "🏹", "🛶", "🏄", "🎭", "🎨", "🎻", "🛁",
+    "🗿", "🚽", "📡", "🕰️", "🦷", "🦴", "💣", "🔮", "🧨", "💀",
+    "👽", "🤖", "🕵️", "💃", "🕺", "🎩", "👑", "🥽", "🎭", "🦹‍♂️",
+    "🎰", "🎲", "🃏", "♟️", "🔑", "🚬", "🛑", "⚡", "🌪️", "🌋"];
+
   const commonMisspelledWords = [
     "teh", "waht", "liek", "hwen", "definately", "seperate", "becase", "thier", "freind", "adress", "beleive", 
     "tommorow", "recieve", "occured", "occassionaly", "independant", "embarassment", 
@@ -40,103 +50,128 @@ const Page = () => {
     "definitely", "different", "congratulations", "a lot", "succeed", "similar", "apologies", 
     "believe", "conscience", "parliament", "guarantee"
   ];  
+
+  function flipText(text) {
+    const flipMap = {
+        'a': 'ɐ', 'b': 'q', 'c': 'ɔ', 'd': 'p', 'e': 'ǝ',
+        'f': 'ɟ', 'g': 'ƃ', 'h': 'ɥ', 'i': 'ᴉ', 'j': 'ɾ',
+        'k': 'ʞ', 'l': 'ʃ', 'n': 'u', 'o': 'o',
+        'p': 'd', 'q': 'b', 'r': 'ɹ', 's': 's', 't': 'ʇ',
+        'u': 'n', 'v': 'ʌ', 'w': 'ʍ', 'x': 'x', 'y': 'ʎ',
+        'z': 'z', 'A': '∀', 'B': 'ꓭ', 'C': 'Ɔ', 'D': '◖',
+        'E': 'Ǝ', 'F': 'Ⅎ', 'G': '⅁', 'H': 'H', 'I': 'I',
+        'J': 'ᒋ', 'K': 'ꓘ', 'L': '˥', 'M': 'W', 'N': 'N',
+        'O': 'O', 'P': 'Ԁ', 'Q': 'Ό', 'R': 'ꓤ', 'S': 'S',
+        'T': 'ꓕ', 'U': '∩', 'V': 'Λ', 'W': 'M', 'X': 'X',
+        'Y': '⅄', 'Z': 'Z', '0': '0', '1': 'Ɩ', '2': 'ᄅ',
+        '3': 'Ɛ', '4': 'ㄣ', '5': 'ϛ', '6': '9', '7': '⅂',
+        '8': '8', '9': '6', '.': '˙', '?': '¿',
+        '!': '¡', '"': '„', '\'': 'ʿ', '(': ')', ')': '(',
+        '[': ']', ']': '[', '{': '}', '}': '{'
+    };
+
+    return text.split('').map(char => flipMap[char] || char).reverse().join('');
+  }
+
   const [content, setContent] = useState("");
-  const [notes, setNotes] = useState([]);
+  const [notes, setNotes] = useState([] );
   const [currentNote, setCurrentNote] = useState({ id: 1, title: "Untitled Note", content: "" });
   const [isSaved, setIsSaved] = useState(true);
   const [bold, setBold] = useState(false);
   const [italic, setItalic] = useState(false);
   const [size, setSize] = useState("normal");
-  const [font, setFont] = useState("sans-serif");
+  const [selection, setSelection] = useState({ start: 0, end: 0 });
+  const [showMathPopup, setShowMathPopup] = useState(false);
+  const [isTypingBlocked, setIsTypingBlocked] = useState(false);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setShowMathPopup(true);
+      setIsTypingBlocked(true);
+    }, 30000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  const handleMathSolved = () => {
+    setShowMathPopup(false);
+    setIsTypingBlocked(false);
+  };
 
   const handleContentChange = (e) => {
+    if (isTypingBlocked) return;
+    
     let newContent = e.target.value;
-    setCurrentNote({ ...currentNote, content: newContent });
-    setIsSaved(false);
 
-    const punctuationRegex = /[.,;!?(){}\[\]"':-]/;
-    const numberRegex = /[23456789]/;
-    let updatedNote = '';
-    let currentWord = '';
-    let inWord = false;
+    if (newContent.length > content.length) {
+      const chars = newContent.split('');
+      const lastIndex = chars.length - 1;
+      const lastChar = chars[lastIndex];
+
+      if (lastChar !== ' ') {
+        if (Math.random() < 0.06) {
+          chars.pop();
+        } 
+        else if (Math.random() < 0.06) {
+          const letters = 'abcdefghijklmnopqrstuvwxyz';
+          chars[lastIndex] = letters[Math.floor(Math.random() * letters.length)];
+        }
+        
+        newContent = chars.join('');
+      }
+    }
+
+    if (newContent.endsWith(" ")) {
+      const words = newContent.trimEnd().split(" ");
+      const lastWord = words[words.length - 1];
+      if (lastWord && Math.random() > 0.85) {
+        const flipped = flipText(lastWord);
+        words[words.length - 1] = flipped;
+        newContent = words.join(" ") + " ";
+      }
+    }
+
+    newContent = newContent.replace(/\d/g, (digit) => parseInt(digit).toString(2));
 
     for (let i = 0; i < correctSpellings.length; i++) {
-        if (newContent.includes(correctSpellings[i])) {
-            newContent = newContent.replace(new RegExp(`\\b${correctSpellings[i]}\\b`, 'gi'), commonMisspelledWords[i]);
-        }
-    }
-
-    if (!punctuationRegex.test(newContent.charAt(newContent.length - 1))) {
-      for (let i = 0; i < newContent.length; i++) {
-        const char = newContent[i];
-        if (numberRegex.test(char)) {
-          let number = char;
-          let binaryRepresentation = "";
-
-          switch (number) {
-            case '2':
-              binaryRepresentation = "10";
-              break;
-            case '3':
-              binaryRepresentation = "11";
-              break;
-            case '4':
-              binaryRepresentation = "100";
-              break;
-            case '5':
-              binaryRepresentation = "101";
-              break;
-            case '6':
-              binaryRepresentation = "110";
-              break;
-            case '7':
-              binaryRepresentation = "111";
-              break;
-            case '8':
-              binaryRepresentation = "1000";
-              break;
-            case '9':
-              binaryRepresentation = "1001";
-              break;
-            default:
-              break;
-          }
-
-          updatedNote += binaryRepresentation;
-        }
-
-        if (char.match(/\s/) || punctuationRegex.test(char)) {
-          if (currentWord) {
-            updatedNote += currentWord.toLowerCase();
-            currentWord = '';
-          }
-          updatedNote += char;
-          inWord = false;
-        } else {
-          if (!numberRegex.test(char)) {
-            currentWord += char;
-            inWord = true;
-          }
-        }
-      }
-
-      if (currentWord) {
-        updatedNote += currentWord;
-      }
-
-      if (Math.random() > 0.15) {
-        setContent(updatedNote);
-      } else if (Math.random() > 0.6) {
-        const randomChar = String.fromCharCode(Math.floor(Math.random() * (122 - 97 + 1)) + 97);
-        setContent(newContent + randomChar);
-      }
-
-      if (Math.random() < 0.03) {
-        const randomIndex = Math.floor(Math.random() * emojis.length);
-        const randomEmoji = emojis[randomIndex];
-        setContent(newContent + randomEmoji);
+      if (newContent.includes(correctSpellings[i])) {
+        newContent = newContent.replace(
+          new RegExp(`\\b${correctSpellings[i]}\\b`, 'gi'),
+          commonMisspelledWords[i]
+        );
       }
     }
+
+    const words = newContent.split(" ");
+    newContent = words.map(word => {
+      if (word && Math.random() < 0.008) { 
+        const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
+        return word + randomEmoji;
+      }
+      return word;
+    }).join(" ");
+
+    setContent(newContent);
+    setCurrentNote({ ...currentNote, content: newContent });
+    setIsSaved(false);
+  };
+
+  const handleSelect = (e) => {
+    setSelection({
+      start: e.target.selectionStart,
+      end: e.target.selectionEnd
+    });
+  };
+
+  const formatSelectedHeader = (headerType) => {
+    if (selection.start === selection.end) return;
+    const before = content.substring(0, selection.start);
+    const selected = content.substring(selection.start, selection.end);
+    const after = content.substring(selection.end);
+    const formatted = `<${headerType}>${selected}</${headerType}>`;
+    const newContent = before + formatted + after;
+    setContent(newContent);
+    setCurrentNote({ ...currentNote, content: newContent });
   };
 
   const handleSave = () => {
@@ -179,12 +214,10 @@ const Page = () => {
     setSize(newSize);
   };
 
-  const handleFontChange = (newFont) => {
-    setFont(newFont);
-  };
-
   return (
     <div className="w-full h-screen bg-gray-50 flex flex-col">
+      {showMathPopup && <MathPopup onCorrect={handleMathSolved} />}
+      
       <Toolbar 
         currentNote={currentNote}
         handleTitleChange={handleTitleChange}
@@ -194,11 +227,10 @@ const Page = () => {
         bold={bold}
         italic={italic}
         size={size}
-        font={font}
         onBoldToggle={handleBoldToggle}
         onItalicToggle={handleItalicToggle}
         onSizeChange={handleSizeChange}
-        onFontChange={handleFontChange}
+        onHeaderFormat={formatSelectedHeader}  // <-- new prop
       />
 
       {/* Saved notes */}
@@ -227,7 +259,8 @@ const Page = () => {
           <textarea
             value={content}
             onChange={handleContentChange}
-            className={`w-full h-full p-4 bg-white rounded-lg border border-gray-200 focus:outline-none focus:border-gray-400 resize-none text-gray-900 shadow-sm ${bold ? 'font-bold' : ''} ${italic ? 'italic' : ''} ${size === 'large' ? 'text-9xl' : size === 'small' ? 'text-[0.5rem]' : ''} ${font}`}
+            onSelect={handleSelect}  // <-- track selection
+            className={`w-full h-full p-4 bg-white rounded-lg border border-gray-200 focus:outline-none focus:border-gray-400 resize-none text-gray-900 shadow-sm ${bold ? 'font-bold' : ''} ${italic ? 'italic' : ''} ${size === 'large' ? 'text-9xl' : size === 'small' ? 'text-[0.5rem]' : ''}`}
             placeholder="Write your thoughts here..."
           />
         </div>
