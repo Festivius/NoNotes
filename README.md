@@ -15,7 +15,7 @@ nonotes is made with **React, Tailwind CSS, and JavaScript**. We include a dynam
 - A terrible writing experience ✍️  
 - A whole lot of headache 😵  
 
-You're bad at writing—**nonotes will make it worse better**.  
+You're bad at writing—**nonotes will make it ~~worse~~ better**.  
 
 ## Our Philosophy  
 We don’t have one. And you shouldn’t either.  
