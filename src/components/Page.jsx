@@ -88,7 +88,7 @@ const Page = () => {
     const interval = setInterval(() => {
       setShowMathPopup(true);
       setIsTypingBlocked(true);
-    }, 30000);
+    }, 300000000000);
 
     return () => clearInterval(interval);
   }, []);
@@ -215,7 +215,7 @@ const Page = () => {
   };
 
   return (
-    <div className="w-full h-screen bg-gray-50 flex flex-col">
+    <div className="w-full h-screen bg-[#f6fff8] flex flex-col">
       {showMathPopup && <MathPopup onCorrect={handleMathSolved} />}
       
       <Toolbar 
@@ -235,19 +235,23 @@ const Page = () => {
 
       {/* Saved notes */}
       <div className="flex flex-1 overflow-hidden">
-        <div className="w-1/4 bg-gray-100 p-2 overflow-y-auto border-r border-gray-200">
+        <div className="w-1/4 bg-[#eaf4f4] p-2 overflow-y-auto border-r border-[#cce3de]">
           {notes.map(note => (
             <div 
               key={note.id} 
               onClick={() => handleSelectNote(note)}
-              className={`p-3 mb-2 rounded-md cursor-pointer ${currentNote.id === note.id ? 'bg-gray-300' : 'bg-gray-50 hover:bg-gray-200'}`}
+              className={`p-3 mb-2 rounded-md cursor-pointer ${
+                currentNote.id === note.id 
+                  ? 'bg-[#a4c3b2]' 
+                  : 'bg-[#f6fff8] hover:bg-[#cce3de]'
+              }`}
             >
-              <h3 className="font-medium text-gray-900 truncate">{note.title}</h3>
-              <p className="text-gray-700 text-sm truncate">{note.content.substring(0, 50)}</p>
+              <h3 className="font-medium text-[#6b9080] truncate">{note.title}</h3>
+              <p className="text-[#6b9080] text-sm truncate">{note.content.substring(0, 50)}</p>
             </div>
           ))}
           {notes.length === 0 && (
-            <div className="text-center p-4 text-gray-700">
+            <div className="text-center p-4 text-[#6b9080]">
               No notes yet. Create one!
             </div>
           )}
@@ -260,7 +264,7 @@ const Page = () => {
             value={content}
             onChange={handleContentChange}
             onSelect={handleSelect}  // <-- track selection
-            className={`w-full h-full p-4 bg-white rounded-lg border border-gray-200 focus:outline-none focus:border-gray-400 resize-none text-gray-900 shadow-sm ${bold ? 'font-bold' : ''} ${italic ? 'italic' : ''} ${size === 'large' ? 'text-9xl' : size === 'small' ? 'text-[0.5rem]' : ''}`}
+            className={`w-full h-full p-4 bg-[#f6fff8] rounded-lg border border-[#cce3de] focus:outline-none focus:border-[#6b9080] resize-none text-[#6b9080] shadow-sm ${bold ? 'font-bold' : ''} ${italic ? 'italic' : ''} ${size === 'large' ? 'text-9xl' : size === 'small' ? 'text-[0.5rem]' : ''}`}
             placeholder="Write your thoughts here..."
           />
         </div>
