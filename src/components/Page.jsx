@@ -84,11 +84,11 @@ const Page = () => {
   const [showMathPopup, setShowMathPopup] = useState(false);
   const [isTypingBlocked, setIsTypingBlocked] = useState(false);
 
-  useEffect(() => {
+  /*useEffect(() => {
     const interval = setInterval(() => {
       setShowMathPopup(true);
       setIsTypingBlocked(true);
-    }, 300000000000);
+    }, 3000000);
 
     return () => clearInterval(interval);
   }, []);
@@ -96,7 +96,7 @@ const Page = () => {
   const handleMathSolved = () => {
     setShowMathPopup(false);
     setIsTypingBlocked(false);
-  };
+  };*/
 
   const handleContentChange = (e) => {
     if (isTypingBlocked) return;
